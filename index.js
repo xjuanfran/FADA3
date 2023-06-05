@@ -42,12 +42,15 @@ const insertNode = (root, value) => {
 };
 
 const search = (node, value) => {
-  if (node.value === value || node === null) {
+  if(node === null) {
+    return null;
+  }
+  if (node.value === value) {
     return node;
   }
   if (value < node.value) {
     return search(node.left, value);
-  } else {
+  } else if (value > node.value) {
     return search(node.right, value);
   }
 };
@@ -81,7 +84,7 @@ const drawTree = (highlightNode = null) => {
   const drawNode = (node, x, y, highlight = false) => {
     ctx.beginPath();
     ctx.arc(x, y, radius, 0, 2 * Math.PI);
-    if(highlight) {
+    if (highlight) {
       ctx.fillStyle = "red";
     } else {
       ctx.fillStyle = "white";
@@ -95,7 +98,7 @@ const drawTree = (highlightNode = null) => {
     ctx.fillStyle = "black";
     ctx.fillText(node.value, x, y);
 
-    console.log(contador);
+    //console.log(contador);
     //console.log(levelHeight);
 
     if (node.left) {
@@ -116,8 +119,8 @@ const drawTree = (highlightNode = null) => {
     }
 
     if (node.right) {
-      let rightX = x + levelHeight;
-      let rightY = y + levelHeight;
+      let rightX = x + levelHeight / 4;
+      let rightY = y + levelHeight / 2;
       connectNodes(x, y + radius, rightX, rightY - radius);
       drawNode(node.right, rightX, rightY, highlightNode === node.right);
     }
@@ -134,9 +137,13 @@ const drawTree = (highlightNode = null) => {
 };
 
 const clearTree = () => {
+  let labelAddNode = document.getElementById("search-value");
+  let labelSearchNode = document.getElementById("value-node");
   const canvas = document.getElementById("myCanvas");
   const ctx = canvas.getContext("2d");
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   root = null; // Restablecer la raíz del árbol a null
+  labelAddNode.value = "";
+  labelSearchNode.value = "";
 };

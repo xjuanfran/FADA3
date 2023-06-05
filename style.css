@@ -1,4 +1,9 @@
-  .myCanvas {
+h1{
+ color: rgb(223, 0, 0);
+ font-family: Lato, Geneva, Tahoma, sans-serif
+}
+
+.myCanvas {
     display: block;
     margin: .5% auto;
     border: 1px solid black;
@@ -10,4 +15,3 @@
     color: white;
     font-weight: bold;
   }
-  
