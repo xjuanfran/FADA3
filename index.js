@@ -50,7 +50,7 @@ const search = (node, value) => {
   }
   if (value < node.value) {
     return search(node.left, value);
-  } else if (value > node.value) {
+  } else {
     return search(node.right, value);
   }
 };
