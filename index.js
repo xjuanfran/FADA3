@@ -1,4 +1,7 @@
-// Lógica JavaScript para construir el árbol y manejar la interactividad
+/**
+ * @param {number} value - The value to be stored in the node
+ * @return {Node} - The newly created node
+ */
 class Node {
   constructor(value) {
     this.value = value;
@@ -7,8 +10,13 @@ class Node {
   }
 }
 
-let root = null; // Variable para almacenar la raíz inicial del árbol
+let root = null; //Variable for storing the initial root of the tree
 
+/**
+ * Add a new node to the tree with the value given by the user
+ * @return {void} - It doesn't return anything
+ *
+ */
 const addNode = () => {
   let value = parseInt(document.getElementById("value-node").value);
   if (!isNaN(value)) {
@@ -21,9 +29,15 @@ const addNode = () => {
   }
 };
 
+/**
+ *
+ * @param {*} root
+ * @param {*} value
+ * @returns {Node} - The root of the tree after insertion
+ */
 const insertNode = (root, value) => {
   if (root === null) {
-    // Si la raíz es nula, creamos un nuevo nodo con el valor dado y lo asignamos como la raíz
+    //If the root is null, we create a new node with the given value and assign it as the root
     root = new Node(value);
   } else {
     if (value === root.value) {
@@ -31,28 +45,35 @@ const insertNode = (root, value) => {
       return root;
     }
     if (value < root.value) {
-      // Si el valor es menor que el valor de la raíz, lo insertamos en el subárbol izquierdo
+      // if the value is less than the root value, we insert it in the left subtree
       root.left = insertNode(root.left, value);
     } else {
-      // Si el valor es mayor o igual que el valor de la raíz, lo insertamos en el subárbol derecho
       root.right = insertNode(root.right, value);
     }
   }
   return root;
 };
 
-
+/**
+ * Remove a node from the tree with the value given by the user
+ * @returns {void} - It doesn't return anything
+ */
 const deleteNode = () => {
   const deleteValue = parseInt(document.getElementById("delete-node").value);
-
   if (isNaN(deleteValue)) {
     alert("Ingrese un valor numerico");
-    return; // Si no se ingresa ningún valor, no hace nada
+    return; // Exit the function
   }
   root = deleteFromTree(root, deleteValue);
   drawTree();
 };
 
+/**
+ *
+ * @param {*} root
+ * @param {*} value
+ * @returns {Node} - The root of the tree after deletion
+ */
 const deleteFromTree = (root, value) => {
   if (root === null) {
     return root;
@@ -76,6 +97,11 @@ const deleteFromTree = (root, value) => {
   return root;
 };
 
+/**
+ *
+ * @param {*} node
+ * @returns - The node with the maximum value in the tree
+ */
 const findMaxValue = (node) => {
   while (node.right !== null) {
     node = node.right;
@@ -83,9 +109,14 @@ const findMaxValue = (node) => {
   return node;
 };
 
-
+/**
+ *
+ * @param {*} node
+ * @param {*} value
+ * @returns - The node with the value given by the user
+ */
 const search = (node, value) => {
-  if(node === null) {
+  if (node === null) {
     return null;
   }
   if (node.value === value) {
@@ -98,6 +129,11 @@ const search = (node, value) => {
   }
 };
 
+/**
+ * @param {*} - It doesn't receive any parameter
+ * @returns {void} - It doesn't return anything
+ * @description - Search the node with the value given by the user
+ */
 const searchNode = () => {
   let value = parseInt(document.getElementById("search-value").value);
   let node = search(root, value);
@@ -109,11 +145,17 @@ const searchNode = () => {
   }
 };
 
+/**
+ *
+ * @param {*} highlightNode
+ * @returns - It doesn't return anything
+ * @description - Draw the tree in the canvas
+ */
 const drawTree = (highlightNode = null) => {
   const canvas = document.getElementById("myCanvas");
   const ctx = canvas.getContext("2d");
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpiar el canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
 
   if (root === null) {
     return;
@@ -121,9 +163,10 @@ const drawTree = (highlightNode = null) => {
 
   const radius = 15;
   const levelHeight = 150;
+  //Contador for the number of nodes in the tree (used to organize the drawing of the lines)
   let contador = 0;
 
-  // Función recursiva para calcular las posiciones de los nodos y dibujarlos en el canvas
+  //Recursive function to calculate the positions of the nodes and draw them in the canvas
   const drawNode = (node, x, y, highlight = false) => {
     ctx.beginPath();
     ctx.arc(x, y, radius, 0, 2 * Math.PI);
@@ -143,24 +186,20 @@ const drawTree = (highlightNode = null) => {
 
     //console.log(contador);
     //console.log(levelHeight);
-
     if (node.left) {
       contador++;
       let leftX, leftY;
-
       if (contador > 1) {
-        // Ajustar la longitud de la línea de conexión si contador > 1
+        // Set the length of the connection line if counter > 1
         leftX = x - levelHeight / 4;
         leftY = y + levelHeight / 2;
       } else {
         leftX = x - levelHeight;
         leftY = y + levelHeight;
       }
-
       connectNodes(x, y + radius, leftX, leftY - radius);
       drawNode(node.left, leftX, leftY, highlightNode === node.left);
     }
-
     if (node.right) {
       let rightX = x + levelHeight / 4;
       let rightY = y + levelHeight / 2;
@@ -169,8 +208,7 @@ const drawTree = (highlightNode = null) => {
     }
   };
 
-  drawNode(root, canvas.width / 2, 30, highlightNode === root); // Dibujar el nodo raíz centrado en la parte superior del canvas
-
+  drawNode(root, canvas.width / 2, 30, highlightNode === root); // Draw the root node centered at the top of the canvas
   function connectNodes(x1, y1, x2, y2) {
     ctx.beginPath();
     ctx.moveTo(x1, y1);
@@ -179,6 +217,11 @@ const drawTree = (highlightNode = null) => {
   }
 };
 
+/**
+ * @param {*} - It doesn't receive any parameter
+ * @returns {void} - It doesn't return anything
+ * @description - Clean the canvas and the tree and input values
+ */
 const clearTree = () => {
   let labelAddNode = document.getElementById("search-value");
   let labelSearchNode = document.getElementById("value-node");
@@ -187,7 +230,7 @@ const clearTree = () => {
   const ctx = canvas.getContext("2d");
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  root = null; // Restablecer la raíz del árbol a null
+  root = null; // Reset the root of the tree to null
   labelAddNode.value = "";
   labelSearchNode.value = "";
   labelDeleteNode.value = "";
