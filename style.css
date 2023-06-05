@@ -4,3 +4,10 @@
     border: 1px solid black;
     background-color: rgb(171, 230, 230);
   }
+
+  .clear-button {
+    background-color: black;
+    color: white;
+    font-weight: bold;
+  }
+  
