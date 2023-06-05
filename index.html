@@ -8,9 +8,14 @@
 </head>
 <body>
   <h1>Árbol de Búsqueda Binario</h1>
+  <label >Agregar un nodo</label>
   <input type="number" id="value-node" placeholder="Ingrese un valor">
   <button onclick="addNode()">Agregar Nodo</button>
+  <label>Buscar Nodo</label>
+  <input type="number" id="search-value" placeholder="Ingrese un valor">
+  <button onclick="searchNode()">Buscar Nodo</button>
   <button onclick="deleteNode()">Eliminar Nodo</button>
+  <button onclick="clearTree()" class="clear-button">LIMPIAR ÁRBOL</button>
   <canvas class= "myCanvas" id="myCanvas" width="800" height="800"></canvas>
 </body>
 </html>
