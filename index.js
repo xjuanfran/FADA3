@@ -21,17 +21,6 @@ const addNode = () => {
   }
 };
 
-// Delete operation
-const deleteNode = () => {
-  let value = parseInt(document.getElementById("value-node").value);
-  if (!isNaN(value)) {
-    root = deleteFromTree(root, value);
-    drawTree();
-  } else {
-    alert("Ingrese un valor numerico");
-  }
-};
-
 const insertNode = (root, value) => {
   if (root === null) {
     // Si la raíz es nula, creamos un nuevo nodo con el valor dado y lo asignamos como la raíz
@@ -52,6 +41,18 @@ const insertNode = (root, value) => {
   return root;
 };
 
+
+const deleteNode = () => {
+  const deleteValue = parseInt(document.getElementById("delete-node").value);
+
+  if (isNaN(deleteValue)) {
+    alert("Ingrese un valor numerico");
+    return; // Si no se ingresa ningún valor, no hace nada
+  }
+  root = deleteFromTree(root, deleteValue);
+  drawTree();
+};
+
 const deleteFromTree = (root, value) => {
   if (root === null) {
     return root;
@@ -61,16 +62,27 @@ const deleteFromTree = (root, value) => {
   } else if (value > root.value) {
     root.right = deleteFromTree(root.right, value);
   } else {
-    if (root.left === null) {
+    if (root.left === null && root.right === null) {
+      return null;
+    } else if (root.left === null) {
       return root.right;
     } else if (root.right === null) {
       return root.left;
     }
-    root.value = findMinValue(root.right);
-    root.right = deleteFromTree(root.right, root.value);
+    const predecessor = findMaxValue(root.left);
+    root.value = predecessor.value;
+    root.left = deleteFromTree(root.left, predecessor.value);
   }
   return root;
 };
+
+const findMaxValue = (node) => {
+  while (node.right !== null) {
+    node = node.right;
+  }
+  return node;
+};
+
 
 const search = (node, value) => {
   if(node === null) {
@@ -170,6 +182,7 @@ const drawTree = (highlightNode = null) => {
 const clearTree = () => {
   let labelAddNode = document.getElementById("search-value");
   let labelSearchNode = document.getElementById("value-node");
+  let labelDeleteNode = document.getElementById("delete-node");
   const canvas = document.getElementById("myCanvas");
   const ctx = canvas.getContext("2d");
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -177,4 +190,5 @@ const clearTree = () => {
   root = null; // Restablecer la raíz del árbol a null
   labelAddNode.value = "";
   labelSearchNode.value = "";
+  labelDeleteNode.value = "";
 };
