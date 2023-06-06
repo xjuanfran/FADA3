@@ -1,4 +1,5 @@
 /**
+ * Class used to represent a node in a binary tree
  * @param {number} value - The value to be stored in the node
  * @return {Node} - The newly created node
  */
@@ -48,7 +49,8 @@ const insertNode = (root, value) => {
       // if the value is less than the root value, we insert it in the left subtree
       root.left = insertNode(root.left, value);
     } else {
-      root.right = insertNode(root.right, value);
+      //if the value is greater than the root value, we insert it into the right subtree
+      root.right = insertNode(root.right, value); 
     }
   }
   return root;
@@ -69,7 +71,7 @@ const deleteNode = () => {
 };
 
 /**
- *
+ * Recursive function that removes a node with a specific value from the binary tree, replacing it with the prev
  * @param {*} root
  * @param {*} value
  * @returns {Node} - The root of the tree after deletion
